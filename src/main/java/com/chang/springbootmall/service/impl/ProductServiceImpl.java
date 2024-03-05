@@ -1,5 +1,6 @@
 package com.chang.springbootmall.service.impl;
 
+import com.chang.springbootmall.controller.vo.ProductRequestVo;
 import com.chang.springbootmall.model.Product;
 import com.chang.springbootmall.repo.ProductRepo;
 import com.chang.springbootmall.service.ProductService;
@@ -16,5 +17,10 @@ public class ProductServiceImpl implements ProductService {
     public Product findProductById(Integer productId) {
         return productRepo.findProductById(productId);
 
+    }
+
+    @Override
+    public Integer createProduct(ProductRequestVo requestVo) {
+        return productRepo.createProduct(requestVo);
     }
 }
