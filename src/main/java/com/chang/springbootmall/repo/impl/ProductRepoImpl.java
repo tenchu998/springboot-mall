@@ -1,5 +1,6 @@
 package com.chang.springbootmall.repo.impl;
 
+import com.chang.springbootmall.constant.ProductCategory;
 import com.chang.springbootmall.controller.vo.ProductRequestVo;
 import com.chang.springbootmall.model.Product;
 import com.chang.springbootmall.repo.ProductRepo;
@@ -21,6 +22,24 @@ public class ProductRepoImpl implements ProductRepo {
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    @Override
+    public List<Product> findProducts(ProductCategory category, String search) {
+        String sql = "SELECT product_id,product_name, category, image_url, price, " +
+                "stock, description, created_date, last_modified_date " +
+                "FROM product WHERE 1=1";
+        Map<String, Object> map = new HashMap<>();
+        if (category != null) {
+            sql += " AND category= :category";
+            map.put("category", category.name());
+        }
+        if (search != null) {
+            sql += " AND product_name LIKE :search";
+            map.put("search", "%" + search + "%");
+        }
+
+        return namedParameterJdbcTemplate.query(sql, map, new ProductMapper());
+    }
 
     @Override
     public Product findProductById(Integer productId) {
@@ -56,5 +75,30 @@ public class ProductRepoImpl implements ProductRepo {
         namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(map), keyHolder);
 
         return keyHolder.getKey().intValue();
+    }
+
+    @Override
+    public void updateProduct(Integer productId, ProductRequestVo requestVo) {
+        String sql = "UPDATE product SET product_name= :productName, category= :category, image_url= :imageUrl, " +
+                "price= :price, stock= :stock, description= :description, last_modified_date= :lastModifiedDate " +
+                "WHERE product_id=:productId";
+        Map<String, Object> map = new HashMap<>();
+        map.put("productId", productId);
+        map.put("productName", requestVo.getProductName());
+        map.put("category", requestVo.getCategory().toString());
+        map.put("imageUrl", requestVo.getImageUrl());
+        map.put("price", requestVo.getPrice());
+        map.put("stock", requestVo.getStock());
+        map.put("description", requestVo.getDescription());
+        map.put("lastModifiedDate", new Date());
+        namedParameterJdbcTemplate.update(sql, map);
+    }
+
+    @Override
+    public void deleteProduct(Integer productId) {
+        String sql = "DELETE FROM product WHERE product_id= :productId";
+        Map<String, Object> map = new HashMap<>();
+        map.put("productId", productId);
+        namedParameterJdbcTemplate.update(sql, map);
     }
 }
