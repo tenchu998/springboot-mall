@@ -18,4 +18,6 @@ public interface ProductRepo {
     void updateProduct(Integer productId, ProductRequestVo requestVo);
 
     void deleteProduct(Integer productId);
+
+    Integer countProduct(ProductQueryVo productQueryVo);
 }

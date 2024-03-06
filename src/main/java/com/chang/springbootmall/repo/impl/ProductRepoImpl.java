@@ -39,7 +39,7 @@ public class ProductRepoImpl implements ProductRepo {
         }
         sql = sql + " ORDER BY " + productQueryVo.getOrderBy() + " " + productQueryVo.getSort();
         // 筆數
-        sql += " LIMIT :limit OFFSET x:offset";
+        sql += " LIMIT :limit OFFSET :offset";
         map.put("limit", productQueryVo.getLimit());
         map.put("offset", productQueryVo.getOffset());
         return namedParameterJdbcTemplate.query(sql, map, new ProductMapper());
@@ -104,5 +104,20 @@ public class ProductRepoImpl implements ProductRepo {
         Map<String, Object> map = new HashMap<>();
         map.put("productId", productId);
         namedParameterJdbcTemplate.update(sql, map);
+    }
+
+    @Override
+    public Integer countProduct(ProductQueryVo productQueryVo) {
+        String sql = "SELECT COUNT(*) FROM product WHERE 1=1";
+        Map<String, Object> map = new HashMap<>();
+        if (productQueryVo.getCategory() != null) {
+            sql += " AND category= :category";
+            map.put("category", productQueryVo.getCategory().name());
+        }
+        if (productQueryVo.getSearch() != null) {
+            sql += " AND product_name LIKE :search";
+            map.put("search", "%" + productQueryVo.getSearch() + "%");
+        }
+        return namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
     }
 }

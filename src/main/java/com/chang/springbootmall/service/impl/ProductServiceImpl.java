@@ -41,4 +41,9 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProduct(Integer productId) {
         productRepo.deleteProduct(productId);
     }
+
+    @Override
+    public Integer countProduct(ProductQueryVo productQueryVo) {
+        return productRepo.countProduct(productQueryVo);
+    }
 }
