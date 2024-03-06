@@ -37,7 +37,11 @@ public class ProductRepoImpl implements ProductRepo {
             sql += " AND product_name LIKE :search";
             map.put("search", "%" + productQueryVo.getSearch() + "%");
         }
-
+        sql = sql + " ORDER BY " + productQueryVo.getOrderBy() + " " + productQueryVo.getSort();
+        // 筆數
+        sql += " LIMIT :limit OFFSET x:offset";
+        map.put("limit", productQueryVo.getLimit());
+        map.put("offset", productQueryVo.getOffset());
         return namedParameterJdbcTemplate.query(sql, map, new ProductMapper());
     }
 
