@@ -1,6 +1,6 @@
 package com.chang.springbootmall.service.impl;
 
-import com.chang.springbootmall.constant.ProductCategory;
+import com.chang.springbootmall.controller.vo.ProductQueryVo;
 import com.chang.springbootmall.controller.vo.ProductRequestVo;
 import com.chang.springbootmall.model.Product;
 import com.chang.springbootmall.repo.ProductRepo;
@@ -17,8 +17,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepo productRepo;
 
     @Override
-    public List<Product> findProducts(ProductCategory category, String search) {
-        return productRepo.findProducts(category, search);
+    public List<Product> findProducts(ProductQueryVo productQueryVo) {
+        return productRepo.findProducts(productQueryVo);
     }
 
     @Override

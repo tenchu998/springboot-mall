@@ -1,6 +1,7 @@
 package com.chang.springbootmall.repo;
 
 import com.chang.springbootmall.constant.ProductCategory;
+import com.chang.springbootmall.controller.vo.ProductQueryVo;
 import com.chang.springbootmall.controller.vo.ProductRequestVo;
 import com.chang.springbootmall.model.Product;
 
@@ -8,7 +9,7 @@ import java.util.List;
 
 public interface ProductRepo {
 
-    List<Product> findProducts(ProductCategory category, String search);
+    List<Product> findProducts(ProductQueryVo productQueryVo);
 
     public Product findProductById(Integer productId);
 

@@ -1,6 +1,6 @@
 package com.chang.springbootmall.repo.impl;
 
-import com.chang.springbootmall.constant.ProductCategory;
+import com.chang.springbootmall.controller.vo.ProductQueryVo;
 import com.chang.springbootmall.controller.vo.ProductRequestVo;
 import com.chang.springbootmall.model.Product;
 import com.chang.springbootmall.repo.ProductRepo;
@@ -24,18 +24,18 @@ public class ProductRepoImpl implements ProductRepo {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public List<Product> findProducts(ProductCategory category, String search) {
+    public List<Product> findProducts(ProductQueryVo productQueryVo) {
         String sql = "SELECT product_id,product_name, category, image_url, price, " +
                 "stock, description, created_date, last_modified_date " +
                 "FROM product WHERE 1=1";
         Map<String, Object> map = new HashMap<>();
-        if (category != null) {
+        if (productQueryVo.getCategory() != null) {
             sql += " AND category= :category";
-            map.put("category", category.name());
+            map.put("category", productQueryVo.getCategory().name());
         }
-        if (search != null) {
+        if (productQueryVo.getSearch() != null) {
             sql += " AND product_name LIKE :search";
-            map.put("search", "%" + search + "%");
+            map.put("search", "%" + productQueryVo.getSearch() + "%");
         }
 
         return namedParameterJdbcTemplate.query(sql, map, new ProductMapper());
