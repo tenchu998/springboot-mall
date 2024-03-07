@@ -29,14 +29,7 @@ public class ProductRepoImpl implements ProductRepo {
                 "stock, description, created_date, last_modified_date " +
                 "FROM product WHERE 1=1";
         Map<String, Object> map = new HashMap<>();
-        if (productQueryVo.getCategory() != null) {
-            sql += " AND category= :category";
-            map.put("category", productQueryVo.getCategory().name());
-        }
-        if (productQueryVo.getSearch() != null) {
-            sql += " AND product_name LIKE :search";
-            map.put("search", "%" + productQueryVo.getSearch() + "%");
-        }
+        sql = addFilteringSql(productQueryVo, sql, map);
         sql = sql + " ORDER BY " + productQueryVo.getOrderBy() + " " + productQueryVo.getSort();
         // 筆數
         sql += " LIMIT :limit OFFSET :offset";
@@ -110,6 +103,11 @@ public class ProductRepoImpl implements ProductRepo {
     public Integer countProduct(ProductQueryVo productQueryVo) {
         String sql = "SELECT COUNT(*) FROM product WHERE 1=1";
         Map<String, Object> map = new HashMap<>();
+        sql = addFilteringSql(productQueryVo, sql, map);
+        return namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+    }
+
+    private String addFilteringSql(ProductQueryVo productQueryVo, String sql, Map<String, Object> map) {
         if (productQueryVo.getCategory() != null) {
             sql += " AND category= :category";
             map.put("category", productQueryVo.getCategory().name());
@@ -118,6 +116,6 @@ public class ProductRepoImpl implements ProductRepo {
             sql += " AND product_name LIKE :search";
             map.put("search", "%" + productQueryVo.getSearch() + "%");
         }
-        return namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+        return sql;
     }
 }
