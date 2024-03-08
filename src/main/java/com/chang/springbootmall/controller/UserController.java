@@ -1,5 +1,6 @@
 package com.chang.springbootmall.controller;
 
+import com.chang.springbootmall.controller.vo.UserLoginRequestVo;
 import com.chang.springbootmall.controller.vo.UserRegisterRequestVo;
 import com.chang.springbootmall.model.User;
 import com.chang.springbootmall.service.UserService;
@@ -27,5 +28,11 @@ public class UserController {
         User user = userService.getUserById(userId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    }
+
+    @PostMapping("/users/login")
+    public ResponseEntity<User> login(@RequestBody @Valid UserLoginRequestVo vo) {
+        User user = userService.login(vo);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 }

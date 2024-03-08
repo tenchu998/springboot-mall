@@ -9,4 +9,6 @@ public interface UserRepo {
     User getUserById(Integer userId);
 
     boolean checkUserExistByEmail(String email);
+
+    User getUserByEmail(String email);
 }

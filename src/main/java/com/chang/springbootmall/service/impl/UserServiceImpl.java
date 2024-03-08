@@ -1,5 +1,6 @@
 package com.chang.springbootmall.service.impl;
 
+import com.chang.springbootmall.controller.vo.UserLoginRequestVo;
 import com.chang.springbootmall.controller.vo.UserRegisterRequestVo;
 import com.chang.springbootmall.model.User;
 import com.chang.springbootmall.repo.UserRepo;
@@ -32,5 +33,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Integer userId) {
         return userRepo.getUserById(userId);
+    }
+
+    @Override
+    public User login(UserLoginRequestVo vo) {
+        boolean isExists = userRepo.checkUserExistByEmail(vo.getEmail());
+        if (!isExists) {
+            // 帳號未被註冊
+            log.warn("信箱{}尚未被註冊過，無法進行登入", vo.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "信箱尚未被註冊過，無法進行登入");
+        }
+
+        User userByEmail = userRepo.getUserByEmail(vo.getEmail());
+        boolean isPasswordCorrect = vo.getPassword().equals(userByEmail.getPassword());
+        if (isPasswordCorrect) {
+            return userByEmail;
+        } else {
+            log.warn("email{}之登入密碼不正確，無法進行登入", vo.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 }
