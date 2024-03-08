@@ -7,4 +7,6 @@ public interface UserRepo {
     Integer createUser(UserRegisterRequestVo vo);
 
     User getUserById(Integer userId);
+
+    boolean checkUserExistByEmail(String email);
 }

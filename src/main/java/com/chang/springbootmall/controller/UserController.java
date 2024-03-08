@@ -21,10 +21,7 @@ public class UserController {
 
     @PostMapping("/users/register")
     public ResponseEntity<User> register(@RequestBody @Valid UserRegisterRequestVo vo) {
-//        boolean isExists = userService.checkUserExistByEmail(vo.getEmail());
-//        if(isExists){
-//            // 帳號被註冊過 需返回
-//        }
+
         Integer userId = userService.register(vo);
 
         User user = userService.getUserById(userId);

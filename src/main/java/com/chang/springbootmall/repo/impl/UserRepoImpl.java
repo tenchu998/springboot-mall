@@ -52,4 +52,13 @@ public class UserRepoImpl implements UserRepo {
             return null;
         }
     }
+
+    @Override
+    public boolean checkUserExistByEmail(String email) {
+        String sql = "SELECT COUNT(*) FROM user WHERE email = :email";
+        Map<String, Object> map = new HashMap<>();
+        map.put("email", email);
+        Integer count = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+        return count != null && count > 0;
+    }
 }
