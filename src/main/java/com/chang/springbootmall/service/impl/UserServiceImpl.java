@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 @Component
@@ -26,6 +27,9 @@ public class UserServiceImpl implements UserService {
             log.warn("信箱{}已被註冊過", vo.getEmail());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "信箱已被註冊過");
         }
+        // password加密
+        String hashedPassword = DigestUtils.md5DigestAsHex(vo.getPassword().getBytes());
+        vo.setPassword(hashedPassword);
 
         return userRepo.createUser(vo);
     }
@@ -45,7 +49,10 @@ public class UserServiceImpl implements UserService {
         }
 
         User userByEmail = userRepo.getUserByEmail(vo.getEmail());
-        boolean isPasswordCorrect = vo.getPassword().equals(userByEmail.getPassword());
+        // hash使用者的密碼
+        String hashedPassword = DigestUtils.md5DigestAsHex(vo.getPassword().getBytes());
+        //比對
+        boolean isPasswordCorrect = hashedPassword.equals(userByEmail.getPassword());
         if (isPasswordCorrect) {
             return userByEmail;
         } else {
