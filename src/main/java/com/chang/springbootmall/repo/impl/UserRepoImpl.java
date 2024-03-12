@@ -1,6 +1,6 @@
 package com.chang.springbootmall.repo.impl;
 
-import com.chang.springbootmall.controller.vo.UserRegisterRequestVo;
+import com.chang.springbootmall.controller.vo.UserRegisterRequestVO;
 import com.chang.springbootmall.model.User;
 import com.chang.springbootmall.repo.UserRepo;
 import com.chang.springbootmall.repo.mapper.UserMapper;
@@ -9,21 +9,21 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Repository
 public class UserRepoImpl implements UserRepo {
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public Integer createUser(UserRegisterRequestVo vo) {
+    public Integer createUser(UserRegisterRequestVO vo) {
         String sql = "INSERT INTO user (email, password, created_date, last_modified_date) " +
                 " VALUE (:email, :password, :createdDate , :lastModifiedDate)";
         Map<String, Object> map = new HashMap<>();

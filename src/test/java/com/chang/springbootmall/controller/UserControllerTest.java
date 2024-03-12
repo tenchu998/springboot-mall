@@ -2,8 +2,8 @@ package com.chang.springbootmall.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.chang.springbootmall.repo.UserRepo;
-import com.chang.springbootmall.controller.vo.UserLoginRequestVo;
-import com.chang.springbootmall.controller.vo.UserRegisterRequestVo;
+import com.chang.springbootmall.controller.vo.UserLoginRequestVO;
+import com.chang.springbootmall.controller.vo.UserRegisterRequestVO;
 import com.chang.springbootmall.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class UserControllerTest {
     // 註冊新帳號
     @Test
     public void register_success() throws Exception {
-        UserRegisterRequestVo userRegisterRequest = new UserRegisterRequestVo();
+        UserRegisterRequestVO userRegisterRequest = new UserRegisterRequestVO();
         userRegisterRequest.setEmail("test1@gmail.com");
         userRegisterRequest.setPassword("123");
 
@@ -60,7 +60,7 @@ public class UserControllerTest {
 
     @Test
     public void register_invalidEmailFormat() throws Exception {
-        UserRegisterRequestVo userRegisterRequest = new UserRegisterRequestVo();
+        UserRegisterRequestVO userRegisterRequest = new UserRegisterRequestVO();
         userRegisterRequest.setEmail("3gd8e7q34l9");
         userRegisterRequest.setPassword("123");
 
@@ -78,7 +78,7 @@ public class UserControllerTest {
     @Test
     public void register_emailAlreadyExist() throws Exception {
         // 先註冊一個帳號
-        UserRegisterRequestVo userRegisterRequest = new UserRegisterRequestVo();
+        UserRegisterRequestVO userRegisterRequest = new UserRegisterRequestVO();
         userRegisterRequest.setEmail("test2@gmail.com");
         userRegisterRequest.setPassword("123");
 
@@ -101,14 +101,14 @@ public class UserControllerTest {
     @Test
     public void login_success() throws Exception {
         // 先註冊新帳號
-        UserRegisterRequestVo userRegisterRequest = new UserRegisterRequestVo();
+        UserRegisterRequestVO userRegisterRequest = new UserRegisterRequestVO();
         userRegisterRequest.setEmail("test3@gmail.com");
         userRegisterRequest.setPassword("123");
 
         register(userRegisterRequest);
 
         // 再測試登入功能
-        UserLoginRequestVo userLoginRequest = new UserLoginRequestVo();
+        UserLoginRequestVO userLoginRequest = new UserLoginRequestVO();
         userLoginRequest.setEmail(userRegisterRequest.getEmail());
         userLoginRequest.setPassword(userRegisterRequest.getPassword());
 
@@ -130,14 +130,14 @@ public class UserControllerTest {
     @Test
     public void login_wrongPassword() throws Exception {
         // 先註冊新帳號
-        UserRegisterRequestVo userRegisterRequest = new UserRegisterRequestVo();
+        UserRegisterRequestVO userRegisterRequest = new UserRegisterRequestVO();
         userRegisterRequest.setEmail("test4@gmail.com");
         userRegisterRequest.setPassword("123");
 
         register(userRegisterRequest);
 
         // 測試密碼輸入錯誤的情況
-        UserLoginRequestVo userLoginRequest = new UserLoginRequestVo();
+        UserLoginRequestVO userLoginRequest = new UserLoginRequestVO();
         userLoginRequest.setEmail(userRegisterRequest.getEmail());
         userLoginRequest.setPassword("unknown");
 
@@ -154,7 +154,7 @@ public class UserControllerTest {
 
     @Test
     public void login_invalidEmailFormat() throws Exception {
-        UserLoginRequestVo userLoginRequest = new UserLoginRequestVo();
+        UserLoginRequestVO userLoginRequest = new UserLoginRequestVO();
         userLoginRequest.setEmail("hkbudsr324");
         userLoginRequest.setPassword("123");
 
@@ -171,7 +171,7 @@ public class UserControllerTest {
 
     @Test
     public void login_emailNotExist() throws Exception {
-        UserLoginRequestVo userLoginRequest = new UserLoginRequestVo();
+        UserLoginRequestVO userLoginRequest = new UserLoginRequestVO();
         userLoginRequest.setEmail("unknown@gmail.com");
         userLoginRequest.setPassword("123");
 
@@ -186,7 +186,7 @@ public class UserControllerTest {
                 .andExpect(status().is(400));
     }
 
-    private void register(UserRegisterRequestVo userRegisterRequest) throws Exception {
+    private void register(UserRegisterRequestVO userRegisterRequest) throws Exception {
         String json = objectMapper.writeValueAsString(userRegisterRequest);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders

@@ -1,7 +1,7 @@
 package com.chang.springbootmall.controller;
 
 import com.chang.springbootmall.constant.ProductCategory;
-import com.chang.springbootmall.controller.vo.ProductRequestVo;
+import com.chang.springbootmall.controller.vo.ProductRequestVO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class ProductControllerTest {
     @Test
     public void getProduct_success() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/products/{productId}", 1);
+                .get("/api/v1/products/{productId}", 1);
 
         mockMvc.perform(requestBuilder)
                 .andDo(print())
@@ -49,7 +49,7 @@ public class ProductControllerTest {
     @Test
     public void getProduct_notFound() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/products/{productId}", 20000);
+                .get("/api/v1/products/{productId}", 20000);
 
         mockMvc.perform(requestBuilder)
                 .andExpect(status().is(404));
@@ -59,7 +59,7 @@ public class ProductControllerTest {
     @Transactional
     @Test
     public void createProduct_success() throws Exception {
-        ProductRequestVo productRequest = new ProductRequestVo();
+        ProductRequestVO productRequest = new ProductRequestVO();
         productRequest.setProductName("test food product");
         productRequest.setCategory(ProductCategory.FOOD);
         productRequest.setImageUrl("http://test.com");
@@ -69,7 +69,7 @@ public class ProductControllerTest {
         String json = objectMapper.writeValueAsString(productRequest);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/products")
+                .post("/api/v1/products")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json);
 
@@ -88,13 +88,13 @@ public class ProductControllerTest {
     @Transactional
     @Test
     public void createProduct_illegalArgument() throws Exception {
-        ProductRequestVo productRequest = new ProductRequestVo();
+        ProductRequestVO productRequest = new ProductRequestVO();
         productRequest.setProductName("test food product");
 
         String json = objectMapper.writeValueAsString(productRequest);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/products")
+                .post("/api/v1/products")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json);
 
@@ -106,7 +106,7 @@ public class ProductControllerTest {
     @Transactional
     @Test
     public void updateProduct_success() throws Exception {
-        ProductRequestVo productRequest = new ProductRequestVo();
+        ProductRequestVO productRequest = new ProductRequestVO();
         productRequest.setProductName("test food product");
         productRequest.setCategory(ProductCategory.FOOD);
         productRequest.setImageUrl("http://test.com");
@@ -116,7 +116,7 @@ public class ProductControllerTest {
         String json = objectMapper.writeValueAsString(productRequest);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .put("/products/{productId}", 3)
+                .put("/api/v1/products/{productId}", 3)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json);
 
@@ -135,13 +135,13 @@ public class ProductControllerTest {
     @Transactional
     @Test
     public void updateProduct_illegalArgument() throws Exception {
-        ProductRequestVo productRequest = new ProductRequestVo();
+        ProductRequestVO productRequest = new ProductRequestVO();
         productRequest.setProductName("test food product");
 
         String json = objectMapper.writeValueAsString(productRequest);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .put("/products/{productId}", 3)
+                .put("/api/v1/products/{productId}", 3)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json);
 
@@ -153,7 +153,7 @@ public class ProductControllerTest {
     @Transactional
     @Test
     public void updateProduct_productNotFound() throws Exception {
-        ProductRequestVo productRequest = new ProductRequestVo();
+        ProductRequestVO productRequest = new ProductRequestVO();
         productRequest.setProductName("test food product");
         productRequest.setCategory(ProductCategory.FOOD);
         productRequest.setImageUrl("http://test.com");
@@ -163,7 +163,7 @@ public class ProductControllerTest {
         String json = objectMapper.writeValueAsString(productRequest);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .put("/products/{productId}", 20000)
+                .put("/api/v1/products/{productId}", 20000)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json);
 
@@ -186,7 +186,7 @@ public class ProductControllerTest {
     @Test
     public void deleteProduct_deleteNonExistingProduct() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .delete("/products/{productId}", 20000);
+                .delete("/api/v1/products/{productId}", 20000);
 
         mockMvc.perform(requestBuilder)
                 .andExpect(status().is(204));
@@ -196,7 +196,7 @@ public class ProductControllerTest {
     @Test
     public void getProducts() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/products");
+                .get("/api/v1/products");
 
         mockMvc.perform(requestBuilder)
                 .andDo(print())
@@ -210,7 +210,7 @@ public class ProductControllerTest {
     @Test
     public void getProducts_filtering() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/products")
+                .get("/api/v1/products")
                 .param("search", "B")
                 .param("category", "CAR");
 
@@ -225,7 +225,7 @@ public class ProductControllerTest {
     @Test
     public void getProducts_sorting() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/products")
+                .get("/api/v1/products")
                 .param("orderBy", "price")
                 .param("sort", "desc");
 
@@ -246,7 +246,7 @@ public class ProductControllerTest {
     @Test
     public void getProducts_pagination() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/products")
+                .get("/api/v1/products")
                 .param("limit", "2")
                 .param("offset", "2");
 

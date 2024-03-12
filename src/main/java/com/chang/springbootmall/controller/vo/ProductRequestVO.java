@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductRequestVo {
+public class ProductRequestVO {
     @NotNull
     private String productName;
     @NotNull

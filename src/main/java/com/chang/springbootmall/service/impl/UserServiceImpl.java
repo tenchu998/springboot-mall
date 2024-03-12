@@ -1,18 +1,18 @@
 package com.chang.springbootmall.service.impl;
 
-import com.chang.springbootmall.controller.vo.UserLoginRequestVo;
-import com.chang.springbootmall.controller.vo.UserRegisterRequestVo;
+import com.chang.springbootmall.controller.vo.UserLoginRequestVO;
+import com.chang.springbootmall.controller.vo.UserRegisterRequestVO;
 import com.chang.springbootmall.model.User;
 import com.chang.springbootmall.repo.UserRepo;
 import com.chang.springbootmall.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.server.ResponseStatusException;
 
-@Component
+@Service
 @Slf4j
 public class UserServiceImpl implements UserService {
 
@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
     private UserRepo userRepo;
 
     @Override
-    public Integer register(UserRegisterRequestVo vo) {
+    public Integer register(UserRegisterRequestVO vo) {
         boolean isExists = userRepo.checkUserExistByEmail(vo.getEmail());
         if (isExists) {
             // 帳號被註冊過 需返回
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User login(UserLoginRequestVo vo) {
+    public User login(UserLoginRequestVO vo) {
         boolean isExists = userRepo.checkUserExistByEmail(vo.getEmail());
         if (!isExists) {
             // 帳號未被註冊

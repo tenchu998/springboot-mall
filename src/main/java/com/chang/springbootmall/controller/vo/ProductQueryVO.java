@@ -4,7 +4,7 @@ import com.chang.springbootmall.constant.ProductCategory;
 import lombok.Data;
 
 @Data
-public class ProductQueryVo {
+public class ProductQueryVO {
     private ProductCategory category;
     private String search;
     private String orderBy;

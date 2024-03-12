@@ -1,7 +1,7 @@
 package com.chang.springbootmall.repo.impl;
 
-import com.chang.springbootmall.controller.vo.ProductQueryVo;
-import com.chang.springbootmall.controller.vo.ProductRequestVo;
+import com.chang.springbootmall.controller.vo.ProductQueryVO;
+import com.chang.springbootmall.controller.vo.ProductRequestVO;
 import com.chang.springbootmall.model.Product;
 import com.chang.springbootmall.repo.ProductRepo;
 import com.chang.springbootmall.repo.mapper.ProductMapper;
@@ -10,21 +10,21 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Repository
 public class ProductRepoImpl implements ProductRepo {
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public List<Product> findProducts(ProductQueryVo productQueryVo) {
+    public List<Product> findProducts(ProductQueryVO productQueryVo) {
         String sql = "SELECT product_id,product_name, category, image_url, price, " +
                 "stock, description, created_date, last_modified_date " +
                 "FROM product WHERE 1=1";
@@ -54,7 +54,7 @@ public class ProductRepoImpl implements ProductRepo {
     }
 
     @Override
-    public Integer createProduct(ProductRequestVo requestVo) {
+    public Integer createProduct(ProductRequestVO requestVo) {
         String sql = "INSERT INTO product (product_name, category, image_url, " +
                 "price, stock, description, created_date, last_modified_date) " +
                 "VALUES (:productName, :category, :imageUrl, " +
@@ -75,7 +75,7 @@ public class ProductRepoImpl implements ProductRepo {
     }
 
     @Override
-    public void updateProduct(Integer productId, ProductRequestVo requestVo) {
+    public void updateProduct(Integer productId, ProductRequestVO requestVo) {
         String sql = "UPDATE product SET product_name= :productName, category= :category, image_url= :imageUrl, " +
                 "price= :price, stock= :stock, description= :description, last_modified_date= :lastModifiedDate " +
                 "WHERE product_id=:productId";
@@ -100,14 +100,14 @@ public class ProductRepoImpl implements ProductRepo {
     }
 
     @Override
-    public Integer countProduct(ProductQueryVo productQueryVo) {
+    public Integer countProduct(ProductQueryVO productQueryVo) {
         String sql = "SELECT COUNT(*) FROM product WHERE 1=1";
         Map<String, Object> map = new HashMap<>();
         sql = addFilteringSql(productQueryVo, sql, map);
         return namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
     }
 
-    private String addFilteringSql(ProductQueryVo productQueryVo, String sql, Map<String, Object> map) {
+    private String addFilteringSql(ProductQueryVO productQueryVo, String sql, Map<String, Object> map) {
         if (productQueryVo.getCategory() != null) {
             sql += " AND category= :category";
             map.put("category", productQueryVo.getCategory().name());

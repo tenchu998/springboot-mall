@@ -1,22 +1,22 @@
 package com.chang.springbootmall.service;
 
-import com.chang.springbootmall.controller.vo.ProductQueryVo;
-import com.chang.springbootmall.controller.vo.ProductRequestVo;
+import com.chang.springbootmall.controller.vo.ProductQueryVO;
+import com.chang.springbootmall.controller.vo.ProductRequestVO;
 import com.chang.springbootmall.model.Product;
 
 import java.util.List;
 
 
 public interface ProductService {
-    List<Product> findProducts(ProductQueryVo productQueryVo);
+    List<Product> findProducts(ProductQueryVO productQueryVo);
 
     Product findProductById(Integer productId);
 
-    Integer createProduct(ProductRequestVo requestVo);
+    Integer createProduct(ProductRequestVO requestVo);
 
-    void updateProduct(Integer productId, ProductRequestVo requestVo);
+    void updateProduct(Integer productId, ProductRequestVO requestVo);
 
     void deleteProduct(Integer productId);
 
-    Integer countProduct(ProductQueryVo productQueryVo);
+    Integer countProduct(ProductQueryVO productQueryVo);
 }
