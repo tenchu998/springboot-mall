@@ -19,4 +19,6 @@ public interface ProductRepo {
     void deleteProduct(Integer productId);
 
     Integer countProduct(ProductQueryVO productQueryVo);
+
+    void updateStock(Integer productId, Integer stock);
 }

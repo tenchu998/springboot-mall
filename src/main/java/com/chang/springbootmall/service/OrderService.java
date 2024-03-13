@@ -6,6 +6,6 @@ import com.chang.springbootmall.model.Order;
 public interface OrderService {
     Integer createOrder(Integer userId, OrderRequestVO orderRequestVO);
 
-    Order getOrderById(Integer ordreId);
+    Order getOrderById(Integer orderId);
 
 }
